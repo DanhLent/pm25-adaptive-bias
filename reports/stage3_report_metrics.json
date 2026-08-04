@@ -1,0 +1,38 @@
+{
+  "generated_at_utc": "2026-06-30T10:35:02.859081+00:00",
+  "input_csv": "data/processed/pm25_fused_hourly_dataset.csv",
+  "formula": {
+    "mae": "mean(abs(estimate - pa_pm25_hourly))",
+    "rmse": "sqrt(mean((estimate - pa_pm25_hourly)^2))",
+    "reference": "pa_pm25_hourly",
+    "estimate_columns": [
+      "cams_pm25",
+      "fused_pm25"
+    ],
+    "unit": "micrograms per cubic meter"
+  },
+  "counts": {
+    "rows_total": 127,
+    "time_start": "2026-06-25 09:00:00+07:00",
+    "time_end": "2026-06-30 15:00:00+07:00",
+    "cams_pm25": 127,
+    "pa_pm25_hourly_loose": 127,
+    "pa_pm25_hourly": 127,
+    "pa_pm25_hourly_strict": 0,
+    "fused_pm25": 127,
+    "rows_with_cams_and_pa": 127,
+    "rows_with_fused_and_pa": 127
+  },
+  "metrics": {
+    "cams_pm25_vs_pa_pm25_hourly": {
+      "n": 127,
+      "mae": 23.207874015748033,
+      "rmse": 25.057994936471285
+    },
+    "fused_pm25_vs_pa_pm25_hourly": {
+      "n": 127,
+      "mae": 4.07833606057383,
+      "rmse": 5.33448745433844
+    }
+  }
+}

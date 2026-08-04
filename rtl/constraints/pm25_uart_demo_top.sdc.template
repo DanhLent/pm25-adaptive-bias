@@ -1,0 +1,6 @@
+# TEMPLATE ONLY - UNVERIFIED ON PHYSICAL BOARD.
+# Confirm that the selected board clock really is 27 MHz before creating the
+# official SDC. The RTL default is 27 MHz, but that does not prove a board pin.
+#
+# After verification, the timing constraint is expected to take this form:
+# create_clock -name clk -period 37.037 [get_ports {clk}]

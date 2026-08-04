@@ -1,0 +1,15 @@
+// TEMPLATE ONLY - NOT A VALID BOARD CONSTRAINT FILE.
+// UNVERIFIED ON PHYSICAL BOARD.
+//
+// Before copying this file to a .cst file, verify all four physical pins,
+// I/O standards, reset polarity, and the exact FPGA package against the
+// schematic/reference constraints for the user's exact board revision.
+//
+// Required logical ports:
+//   clk      -> verified 27 MHz board clock pin
+//   rst_n    -> verified active-low reset/button source
+//   uart_rx  -> verified FPGA RX / USB-bridge TX pin
+//   uart_tx  -> verified FPGA TX / USB-bridge RX pin
+//
+// Do not uncomment guessed examples. Add only vendor-supported IO_LOC/IO_PORT
+// statements copied from a verified board source.

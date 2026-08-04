@@ -1,0 +1,5 @@
+sample_index,sample_valid,qc_ok,hour,cams_pm25_x16,purpleair_pm25_x16,result_valid,accepted,learned_bias_before_x16,residual_x16,error_x16,delta_x16,learned_bias_after_x16,fused_raw_x16,fused_pm25_x16,alert_level,hysteresis_alert_before,hysteresis_alert_after
+0,1,1,0,0,100000,1,1,0,100000,100000,12500,2048,0,0,0,0,0
+1,1,1,1,0,100000,1,1,2048,100000,97952,12244,2048,2048,2048,3,0,1
+2,1,1,2,100000,0,1,1,2048,-100000,-102048,-12756,-2048,102048,8000,4,1,1
+3,1,1,3,100000,0,1,1,-2048,-100000,-97952,-12244,-2048,97952,8000,4,1,1

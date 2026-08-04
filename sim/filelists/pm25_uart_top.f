@@ -1,0 +1,12 @@
++incdir+rtl/core
++incdir+rtl/uart
+rtl/core/alert_classifier.v
+rtl/core/hysteresis.v
+rtl/core/bias_update.v
+rtl/core/fusion.v
+rtl/core/pm25_alert_core.v
+rtl/uart/uart_rx.v
+rtl/uart/uart_tx.v
+rtl/uart/pm25_packet_rx.v
+rtl/uart/pm25_packet_tx.v
+rtl/top/pm25_uart_demo_top.v

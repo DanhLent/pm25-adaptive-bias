@@ -1,0 +1,50 @@
+{
+  "model_name": "pm25_core_v1_adaptive_bias",
+  "config_status": "SYNTHETIC SMOKE TEST ONLY; not an official trained or hardware config",
+  "config_role": "synthetic_smoke_test",
+  "synthetic_data": true,
+  "promoted_to_active_config": false,
+  "selected_alpha": 0.125,
+  "selected_alpha_fraction": "1/8",
+  "selected_alpha_shift": 3,
+  "scale": 16,
+  "pm25_min": 0.0,
+  "pm25_max": 500.0,
+  "bias_min": -128.0,
+  "bias_max": 128.0,
+  "alert_on": 35.4,
+  "alert_off": 32.0,
+  "alert_thresholds": {
+    "good_max": 12.0,
+    "moderate_max": 35.4,
+    "usg_max": 55.4,
+    "unhealthy_max": 150.4
+  },
+  "training_dataset": "training\\outputs\\sample_training_data.csv",
+  "training_date": "synthetic smoke test; original run date not recorded",
+  "training": {
+    "dataset_source": "training\\outputs\\sample_training_data.csv",
+    "usable_samples": 96,
+    "valid_updates": 92,
+    "warmup_samples": 24,
+    "selection_score": 3.4581224849602803,
+    "mae": 3.0617304354122177,
+    "rmse": 3.4367174672330294,
+    "bias_std_after_warmup": 0.7319602477403133,
+    "alert_state_changes": 5,
+    "final_learned_bias": 5.92288159552236
+  },
+  "update_semantics": {
+    "fused_output": "cams_pm25 plus learned_bias before current update",
+    "valid_update": "update only when qc_ok is true",
+    "invalid_update": "hold learned_bias",
+    "bias_saturation": "clip after each accepted floating-point update"
+  },
+  "notes": [
+    "Training output is constants and initial behavior, not a neural-network model.",
+    "The scale and exported x16 values are candidates for later bit-accurate review.",
+    "Synthetic data only verifies the workflow; do not use this file as an official trained or hardware config.",
+    "This generic filename is retained for compatibility and must be replaced only after reviewed real-data Colab training.",
+    "No config from this run is a final fixed-point freeze."
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "placeholder": true,
+  "valid_config": false,
+  "model_name": "pm25_core_v1_adaptive_bias",
+  "config_status": "PLACEHOLDER ONLY; invalid until real CAMS + PurpleAir training is run and reviewed",
+  "selected_alpha": null,
+  "selected_alpha_shift": null,
+  "scale": null,
+  "alert_on": null,
+  "alert_off": null,
+  "bias_min": null,
+  "bias_max": null,
+  "training_dataset": "PLACEHOLDER: path or identifier for real aligned CAMS + PurpleAir data",
+  "training_date": null,
+  "notes": [
+    "Do not use this placeholder for fixed-point design, test vectors, or RTL constants.",
+    "Run the Colab workflow on real overlap data.",
+    "Export the result as core_v1_config.real_trained.json.",
+    "Review metrics before copying the reviewed real config to core_v1_config.json."
+  ]
+}

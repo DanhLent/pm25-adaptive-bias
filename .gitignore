@@ -1,0 +1,88 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+.env
+.ipynb_checkpoints/
+.DS_Store
+_codex_inputs/
+archive/
+outputs/
+logs/
+build/
+reports/**/build*/
+reports/**/render*/
+reports/**/compiled/
+training/outputs/
+sim/modelsim_work/
+sim/waves/*
+!sim/waves/.gitkeep
+data/raw/
+data/live/*
+!data/live/.gitkeep
+data/interim/
+data/processed/
+*.zip
+*.aux
+*.log
+*.out
+*.vvp
+
+# --- GitHub repository cleanup ---
+
+# Local test work directories
+.pytest_tmp/
+.pytest_tmp_warnings/
+
+# Coverage and editor files
+.coverage
+coverage.xml
+htmlcov/
+.vscode/
+.idea/
+Thumbs.db
+*.swp
+*.swo
+
+# Machine-local configuration
+config.local.yaml
+*.local.yaml
+.env
+.env.*
+
+# Internal AI/task artifacts
+AGENTS.md
+CODEX_PM25_FULL_REFACTOR_PROMPT.md
+CODEX_PM25_PRE_TASK_HOTFIX_PROMPT.md
+PATCH_MANIFEST.md
+docs/cleanup/
+docs/design_notes/legacy_context/
+
+# Reports continuously replaced by runtime jobs
+reports/PM25_UNIFIED_PIPELINE_STATUS.md
+reports/alpha_evaluation/latest_alpha_candidate.*
+
+# Temporary report work directories
+reports/midterm/final/*_work/
+
+# --- Internal implementation history ---
+reports/PM25_FULL_REFACTOR_*.md
+reports/PM25_PRE_TASK_HOTFIX_REPORT.md
+docs/design_notes/FILE_INVENTORY.md
+
+# --- Generated and internal public exclusions ---
+
+# Runtime-generated migration reports
+reports/PM25_DATA_MIGRATION_QC_REPORT.md
+reports/pm25_data_migration_qc.json
+
+# Machine-local or obsolete project context
+reports/STAGE_3_STATUS.md
+docs/design_notes/PROJECT_CONTEXT.md
+docs/design_notes/pm25-alert-ip_README.md
+
+# Coursework submission artifacts
+reports/midterm/

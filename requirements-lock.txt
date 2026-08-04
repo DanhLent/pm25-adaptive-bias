@@ -1,0 +1,10 @@
+# Reproducible Windows development environment used for the final pre-task audit.
+# Regenerate deliberately after validating the full Python and RTL regression suite.
+pandas==3.0.3
+numpy==2.5.0
+matplotlib==3.11.0
+scikit-learn==1.9.0
+PyYAML==6.0.3
+joblib==1.5.3
+requests==2.34.2
+pytest==9.1.1

@@ -1,0 +1,49 @@
+{
+  "model_name": "pm25_core_v1_adaptive_bias",
+  "config_status": "REAL-DATA TRAINING OUTPUT; pending manual review and fixed-point freeze",
+  "config_role": "real_training_candidate_pending_review",
+  "synthetic_data": false,
+  "promoted_to_active_config": false,
+  "selected_alpha": 0.125,
+  "selected_alpha_fraction": "1/8",
+  "selected_alpha_shift": 3,
+  "scale": 16,
+  "pm25_min": 0.0,
+  "pm25_max": 500.0,
+  "bias_min": -128.0,
+  "bias_max": 128.0,
+  "alert_on": 35.4,
+  "alert_off": 32.0,
+  "alert_thresholds": {
+    "good_max": 12.0,
+    "moderate_max": 35.4,
+    "usg_max": 55.4,
+    "unhealthy_max": 150.4
+  },
+  "training_dataset": "training/outputs/real_training_input.normalized.csv",
+  "training_date": "2026-06-22T17:41:10.858663+00:00",
+  "training": {
+    "dataset_source": "training/outputs/real_training_input.normalized.csv",
+    "usable_samples": 49,
+    "valid_updates": 22,
+    "warmup_samples": 12,
+    "selection_score": 5.984842203122746,
+    "mae": 5.640263108310358,
+    "rmse": 7.6048402565115145,
+    "bias_std_after_warmup": 0.7228954740619397,
+    "alert_state_changes": 4,
+    "final_learned_bias": -7.693421700961903
+  },
+  "update_semantics": {
+    "fused_output": "cams_pm25 plus learned_bias before current update",
+    "valid_update": "update only when qc_ok is true",
+    "invalid_update": "hold learned_bias",
+    "bias_saturation": "clip after each accepted floating-point update"
+  },
+  "notes": [
+    "Training output is constants and initial behavior, not a neural-network model.",
+    "The scale and exported x16 values are candidates for later bit-accurate review.",
+    "Real-data output still requires metric review before promotion to core_v1_config.json.",
+    "No config from this script is a final fixed-point freeze."
+  ]
+}
