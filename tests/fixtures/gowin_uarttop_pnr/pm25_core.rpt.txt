@@ -1,0 +1,10 @@
+3. Resource Usage Summary
+
+  --------------------------------------------------------------------------------
+  Resources                   | Usage                               | Utilization
+  --------------------------------------------------------------------------------
+  Logic                       | 490/8640                            |  6%
+    --LUT,ALU,ROM16           | 490(301 LUT, 189 ALU, 0 ROM16)      | -
+  Register                    | 283/6693                            |  5%
+    --Logic Register as Latch | 0/6480                              |  0%
+    --Logic Register as FF    | 281/6480                            |  5%

@@ -1,5 +1,8 @@
 # RTL Quality Review Report
 
+> Historical snapshot: this document predates physical FPGA validation. See
+> `reports/fpga/hardware_validation.md` for current status.
+
 ## Result
 
 The RTL cleanup pass kept IP behavior unchanged while making the synthesizable core cleaner and the simulation output much quieter.

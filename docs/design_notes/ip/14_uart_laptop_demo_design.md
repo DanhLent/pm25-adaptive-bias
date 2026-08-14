@@ -1,5 +1,8 @@
 # UART Laptop Demo Design
 
+> Historical snapshot: this document predates physical FPGA validation. See
+> `reports/fpga/hardware_validation.md` for current status.
+
 ## Purpose
 
 This design adds a laptop-only UART wrapper around the already-verified `pm25_alert_core`. It does not change the core algorithm, constants, Python golden model, or CSV vector contract.

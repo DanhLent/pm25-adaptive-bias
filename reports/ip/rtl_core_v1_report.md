@@ -1,5 +1,8 @@
 # RTL Core V1 Report
 
+> Historical snapshot: this document predates physical FPGA validation. See
+> `reports/fpga/hardware_validation.md` for current status.
+
 ## Result
 
 The first clean Verilog RTL implementation of `pm25_core_v1_adaptive_bias_fixed` has been added, together with a self-checking CSV-vector testbench and an Icarus Verilog simulation runner.

@@ -1,0 +1,6 @@
+{
+  "status": "superseded",
+  "target": "Core",
+  "note": "This historical parser placeholder is superseded by reports/fpga/gowin_implementation_summary.json. No separate core-only implementation result is estimated here.",
+  "current_full_top_summary": "reports/fpga/gowin_implementation_summary.json"
+}

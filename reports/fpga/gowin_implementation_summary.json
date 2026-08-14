@@ -1,0 +1,50 @@
+{
+  "target": "GW1NR-LV9QN88PC6/I5",
+  "device_family": "GW1NR-9C",
+  "top": "pm25_uart_demo_top",
+  "clock_constraint": {
+    "frequency_mhz": 27.0,
+    "period_ns": 37.037
+  },
+  "source_reports": {
+    "pnr_report": "build/gowin_gui/pm25_core/impl/pnr/pm25_core.rpt.txt",
+    "timing_report": "build/gowin_gui/pm25_core/impl/pnr/pm25_core_tr_content.html",
+    "pnr_log": "build/gowin_gui/pm25_core/impl/pnr/pm25_core.log"
+  },
+  "constraints": {
+    "source_cst": "build/gowin_gui/pm25_core/src/pm25_core.cst",
+    "source_sdc": "build/gowin_gui/pm25_core/src/pm25_core.sdc",
+    "tracked_cst": "rtl/constraints/tang_nano_9k_pm25_uart_demo_top.cst",
+    "tracked_sdc": "rtl/constraints/tang_nano_9k_pm25_uart_demo_top.sdc",
+    "cst_sha256": "b93d7b844567955d6a04317a61567fe301841cd3ff3cf803effad4f676544778",
+    "sdc_sha256": "0ab46a9d50efcaa0dfc0712f957c3774ebd6335e7dac96760b9de11a62dcce0b"
+  },
+  "post_route": {
+    "logic_used": 490,
+    "logic_total": 8640,
+    "logic_utilization_percent": 6,
+    "registers_used": 283,
+    "registers_total": 6693,
+    "register_utilization_percent": 5,
+    "actual_fmax_mhz": 58.705,
+    "setup_violated_endpoints": 0,
+    "hold_violated_endpoints": 0,
+    "tns_setup_ns": 0.0,
+    "tns_hold_ns": 0.0,
+    "representative_worst_setup_slack_ns": 20.003,
+    "representative_worst_hold_slack_ns": 0.572
+  },
+  "bitstream_generation": "completed",
+  "sram_programming": "successfully performed on physical board",
+  "physical_uart_validation": {
+    "transactions": 140,
+    "matched": 140,
+    "mismatches": 0,
+    "report": "reports/fpga/hardware_validation.md"
+  },
+  "notes": [
+    "The local build/gowin_gui workspace remains ignored/generated and is not authoritative source.",
+    "No programmer transcript or bitstream checksum is preserved in this repository."
+  ]
+}
+

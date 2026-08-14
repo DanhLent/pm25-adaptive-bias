@@ -1,0 +1,60 @@
+{
+  "board": "Tang Nano 9K",
+  "fpga": {
+    "part": "GW1NR-LV9QN88PC6/I5",
+    "device_family": "GW1NR-9C"
+  },
+  "top": "pm25_uart_demo_top",
+  "clock_mhz": 27.0,
+  "uart_baud": 115200,
+  "golden_model": "python_model/fixed_point/pm25_core_v1_fixed.py",
+  "summary": {
+    "transactions": 140,
+    "mismatches": 0
+  },
+  "evidence": [
+    {
+      "path": "reports/fpga/evidence/uart/board_run_100.csv",
+      "scenario": "canonical timeline replay",
+      "rows": 100,
+      "mismatches": 0,
+      "sha256": "f72dd84ce64013af04923164aeb00046055e2d88b573cef29934d193ab5e808a"
+    },
+    {
+      "path": "reports/fpga/evidence/uart/board_run_mixed.csv",
+      "scenario": "mixed adaptive-bias behavior",
+      "rows": 16,
+      "mismatches": 0,
+      "sha256": "b766dbbaa04392d0aaced0633876949dfff7602adc4418a75085716455e7ef78"
+    },
+    {
+      "path": "reports/fpga/evidence/uart/board_threshold_boundaries.csv",
+      "scenario": "alert threshold boundaries",
+      "rows": 12,
+      "mismatches": 0,
+      "sha256": "9aedd33bb8fcf4fd1337fd55bf0350ab7fdbb6450b86c3b77c0f7d0a4a35529d"
+    },
+    {
+      "path": "reports/fpga/evidence/uart/board_invalid_qc_hold.csv",
+      "scenario": "invalid sample and QC hold",
+      "rows": 8,
+      "mismatches": 0,
+      "sha256": "15133641a12615b76159d516dc40ec3beb81f02bcb1cdd42fa30b6c3145c7fb5"
+    },
+    {
+      "path": "reports/fpga/evidence/uart/board_bias_saturation.csv",
+      "scenario": "positive and negative bias saturation",
+      "rows": 4,
+      "mismatches": 0,
+      "sha256": "929960bcd091a39e034195b85e6369f932dfabc46a1932218f3e49f10e91de6a"
+    }
+  ],
+  "not_counted_in_headline": [
+    {
+      "path": "logs/uart/board_run_first5.csv",
+      "reason": "overlapping smoke-test evidence"
+    }
+  ],
+  "coverage_claim": "targeted physical validation only; no formal, code, UVM, or exhaustive coverage claimed"
+}
+

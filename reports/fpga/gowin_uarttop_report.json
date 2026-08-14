@@ -1,0 +1,104 @@
+{
+  "status": "parsed",
+  "target": "UartTop",
+  "build_dir": "build\\gowin_gui\\pm25_core\\impl",
+  "report_files": [
+    "pnr\\pm25_core.log",
+    "pnr\\pm25_core.pin.html",
+    "pnr\\pm25_core.power.html",
+    "pnr\\pm25_core.rpt.html",
+    "pnr\\pm25_core.rpt.txt",
+    "pnr\\pm25_core.tr.html",
+    "pnr\\pm25_core_tr_cata.html",
+    "pnr\\pm25_core_tr_content.html",
+    "gwsynthesis\\pm25_core.log",
+    "gwsynthesis\\pm25_core_syn.rpt.html",
+    "gwsynthesis\\pm25_core_syn_resource.html"
+  ],
+  "metrics": {
+    "logic_cells_or_luts": 490,
+    "logic_total": 8640,
+    "logic_utilization_percent": 6.0,
+    "flip_flops": 283,
+    "flip_flop_total": 6693,
+    "flip_flop_utilization_percent": 5.0,
+    "dsp": null,
+    "bram": null,
+    "fmax_mhz": 58.705,
+    "setup_violated_endpoints": 0,
+    "hold_violated_endpoints": 0,
+    "setup_tns_ns": 0.0,
+    "hold_tns_ns": 0.0,
+    "worst_setup_slack_ns": 20.003,
+    "worst_hold_slack_ns": 0.572,
+    "worst_slack_ns": 20.003,
+    "bitstream_generation_completed": true
+  },
+  "evidence": {
+    "bitstream_generation_completed": {
+      "file": "pnr\\pm25_core.log",
+      "matched_text": "Bitstream generation completed"
+    },
+    "logic_cells_or_luts": {
+      "file": "pnr\\pm25_core.rpt.txt",
+      "matched_text": "Logic | 490/8640 | 6%"
+    },
+    "logic_total": {
+      "file": "pnr\\pm25_core.rpt.txt",
+      "matched_text": "Logic | 490/8640 | 6%"
+    },
+    "logic_utilization_percent": {
+      "file": "pnr\\pm25_core.rpt.txt",
+      "matched_text": "Logic | 490/8640 | 6%"
+    },
+    "flip_flops": {
+      "file": "pnr\\pm25_core.rpt.txt",
+      "matched_text": "Register | 283/6693 | 5%"
+    },
+    "flip_flop_total": {
+      "file": "pnr\\pm25_core.rpt.txt",
+      "matched_text": "Register | 283/6693 | 5%"
+    },
+    "flip_flop_utilization_percent": {
+      "file": "pnr\\pm25_core.rpt.txt",
+      "matched_text": "Register | 283/6693 | 5%"
+    },
+    "setup_violated_endpoints": {
+      "file": "pnr\\pm25_core_tr_content.html",
+      "matched_text": "Numbers of Setup Violated Endpoints</td> <td>0</td>"
+    },
+    "hold_violated_endpoints": {
+      "file": "pnr\\pm25_core_tr_content.html",
+      "matched_text": "Numbers of Hold Violated Endpoints</td> <td>0</td>"
+    },
+    "fmax_mhz": {
+      "file": "pnr\\pm25_core_tr_content.html",
+      "matched_text": "<th>Actual Fmax</th> <th>Logic Level</th> <th>Entity</th> </tr> <tr> <td>1</td> <td>pm25_clk</td> <td>27.000(MHz)</td> <td>58.705(MHz)</td>"
+    },
+    "setup_tns_ns": {
+      "file": "pnr\\pm25_core_tr_content.html",
+      "matched_text": "<td>pm25_clk</td> <td>Setup</td> <td>0.000</td>"
+    },
+    "hold_tns_ns": {
+      "file": "pnr\\pm25_core_tr_content.html",
+      "matched_text": "<td>pm25_clk</td> <td>Hold</td> <td>0.000</td>"
+    },
+    "worst_setup_slack_ns": {
+      "file": "pnr\\pm25_core_tr_content.html",
+      "matched_text": "Setup Analysis Report</a></h3> <h4>Report Command:report_timing -setup -max_paths 25 -max_common_paths 1</h4> <h3>Path1</h3> <p><b>Path Summary:</b></p> <table class=\"summary_table\"> <tr> <td class=\"label\">Slack</td> <td>20.003</td>"
+    },
+    "worst_hold_slack_ns": {
+      "file": "pnr\\pm25_core_tr_content.html",
+      "matched_text": "Hold Analysis Report</a></h3> <h4>Report Command:report_timing -hold -max_paths 25 -max_common_paths 1</h4> <h3>Path1</h3> <p><b>Path Summary:</b></p> <table class=\"summary_table\"> <tr> <td class=\"label\">Slack</td> <td>0.572</td>"
+    },
+    "worst_slack_ns": {
+      "file": "pnr\\pm25_core_tr_content.html",
+      "matched_text": "worst_slack_ns aliases worst_setup_slack_ns"
+    }
+  },
+  "warning_count": 0,
+  "warnings": [],
+  "critical_path_evidence": [],
+  "hardware_validation_evidence": "not parsed from Gowin reports",
+  "note": "Null metrics were not found and are not estimated."
+}

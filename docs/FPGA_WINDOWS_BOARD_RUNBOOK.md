@@ -1,58 +1,96 @@
-# Gowin/Tang Nano Board Handoff
+# Tang Nano 9K FPGA Windows Board Runbook
 
-Status: **UNVERIFIED ON PHYSICAL BOARD**.
+This runbook captures the reproducible Windows flow for the PM2.5 UART FPGA
+demo and distinguishes preserved evidence from missing artifacts.
 
-Local Icarus simulation covers the core vectors, alpha shifts, packet blocks,
-packet-level wrapper, and real 8N1 serial top, including invalid-request state
-hold. This repository still does not contain evidence for the exact FPGA
-part/package, clock pin, reset pin/polarity, or USB-UART RX/TX pins of the
-user's exact board revision. The planned board named in historical notes is
-Tang Nano 9K. That name alone is not sufficient to create trustworthy
-constraints. Gowin EDA is also unavailable in the current execution
-environment, so there are no genuine synthesis, place-and-route, timing,
-utilization, bitstream, programming, or board-UART results.
+## Current Evidence Status
 
-The build scripts follow Gowin's documented command-line model: `gw_sh` executes a Tcl script using `add_file`, `set_device`, `set_option`, and `run syn/pnr/all`. References:
+### Verified
 
-- [Gowin Software Tcl Commands User Guide](https://www.gowinsemi.com/upload/database_doc/3262/document/68b8a001a6a92.pdf)
-- [Gowin EDA support/download page](https://www.gowinsemi.com/en/support/home)
-
-## 1. Verify board identity and pins
-
-Before creating a real `.cst`, record evidence from the schematic or vendor reference constraints for the exact board revision:
-
-| Required item | Repository status |
+| Item | Status |
 | --- | --- |
-| Full Gowin device/part string including package/speed | Missing |
-| Board revision | Missing |
-| Clock frequency and physical pin | RTL assumes 27 MHz; physical evidence missing |
-| `rst_n` source, polarity, and pin | Missing |
-| `uart_rx` pin, connected to USB bridge TX | Missing |
-| `uart_tx` pin, connected to USB bridge RX | Missing |
-| I/O standards/voltage | Missing |
+| Board family | Tang Nano 9K |
+| FPGA part used | GW1NR-LV9QN88PC6/I5 / GW1NR-9C |
+| Top | `pm25_uart_demo_top` |
+| Working clock | 27 MHz on `clk` pin 52 |
+| Reset | `rst_n` pin 3 |
+| UART TX | pin 17 |
+| UART RX | pin 18 |
+| UART baud | 115200 |
+| Gowin synthesis/P&R/timing | Completed |
+| Bitstream generation | Completed |
+| SRAM programming | Performed on physical board |
+| Automated UART comparison | 140 transactions, 0 mismatches |
 
-Templates are `rtl/constraints/pm25_uart_demo_top.cst.template` and `.sdc.template`. Copy them to new `.cst`/`.sdc` files only after replacing comments with sourced values. The build wrapper rejects `.template` files.
+### Not Yet Preserved As Evidence
 
-## 2. Install and inspect Gowin EDA
+- Standalone JTAG detection transcript
+- Gowin Programmer transcript
+- Board photo or video
+- Bitstream checksum
+- Independently recorded exact PCB revision
 
-Install a Gowin EDA version supporting the exact part. Confirm `gw_sh.exe` works:
+Do not describe those missing artifacts as preserved until they are actually
+captured.
+
+## Source Of Truth
+
+Authoritative design source:
+
+- `rtl/core/`
+- `rtl/uart/`
+- `rtl/top/`
+
+Authoritative board constraints for the validated Tang Nano 9K run:
+
+- `rtl/constraints/tang_nano_9k_pm25_uart_demo_top.cst`
+- `rtl/constraints/tang_nano_9k_pm25_uart_demo_top.sdc`
+
+The successful constraints were promoted as exact copies from:
+
+- `build/gowin_gui/pm25_core/src/pm25_core.cst`
+- `build/gowin_gui/pm25_core/src/pm25_core.sdc`
+
+The `build/gowin_gui/` workspace is ignored/local lab output. Do not edit RTL
+there as the authoritative source.
+
+## Install Tools
+
+Install:
+
+- Python 3 with the repository requirements, including PySerial
+- Gowin EDA with support for `GW1NR-LV9QN88PC6/I5`
+- Icarus Verilog for local simulation
+- A USB-UART driver for the board if Windows does not enumerate it automatically
+
+Example Python setup:
+
+```powershell
+py -3 -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements-lock.txt
+```
+
+Confirm Gowin shell availability:
 
 ```powershell
 & "C:\Gowin\Gowin_Vx.x.x\IDE\bin\gw_sh.exe" -help
 ```
 
-Check repository readiness:
+## Check Readiness
 
 ```powershell
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File `
   .\scripts\fpga\check_fpga_readiness.ps1 `
-  -Device "EXACT_PART_FROM_BOARD_EVIDENCE" `
-  -ConstraintFile ".\rtl\constraints\VERIFIED_BOARD.cst"
+  -Device "GW1NR-LV9QN88PC6/I5" `
+  -ConstraintFile ".\rtl\constraints\tang_nano_9k_pm25_uart_demo_top.cst" `
+  -TimingConstraintFile ".\rtl\constraints\tang_nano_9k_pm25_uart_demo_top.sdc"
 ```
 
-Readiness must show `core_synthesis_ready: true` before core synthesis and `uart_implementation_ready: true` before full implementation.
+The readiness script reports simulation, synthesis, implementation, and
+preserved hardware-validation evidence separately. Hardware validation comes
+from `reports/fpga/hardware_validation.json`, not from generic parser output.
 
-## 3. Re-run simulation first
+## Re-Run Local Regression
 
 ```powershell
 .\.venv\Scripts\python.exe -m pytest -q
@@ -60,86 +98,94 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File `
   .\sim\scripts\run_all_tests.ps1
 ```
 
-Require all Python tests, 23 vector runs/1,391 samples, shifts 2–6, packet
-RX/TX, packet-level wrapper request-contract tests, and real 8N1 serial-top
-tests to pass. The active/default RTL remains shift 3.
+Require the Python tests and RTL simulations to pass before rebuilding or
+programming.
 
-## 4. Core-only synthesis
+## Rebuild In Gowin
 
-Core synthesis has no board I/O constraints, but it still requires the exact target part for meaningful resource mapping:
-
-```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File `
-  .\scripts\fpga\build_gowin.ps1 `
-  -Target Core `
-  -Device "EXACT_PART_FROM_BOARD_EVIDENCE" `
-  -GowinShell "C:\Gowin\Gowin_Vx.x.x\IDE\bin\gw_sh.exe"
-```
-
-The flow uses top `pm25_alert_core` and `run syn`, then parses report evidence into:
-
-```text
-reports\fpga\gowin_core_report.json
-reports\fpga\gowin_core_report.md
-```
-
-Record LUT/logic cells, FF, DSP, BRAM, warnings, and any synthesis critical-path evidence. Null parser fields mean the installed tool did not expose a recognized value; inspect the cited source report and update the parser with a fixture rather than estimating.
-
-## 5. Full UART top implementation
-
-After the verified CST exists:
+Use the tracked source and tracked constraints:
 
 ```powershell
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File `
   .\scripts\fpga\build_gowin.ps1 `
   -Target UartTop `
-  -Device "EXACT_PART_FROM_BOARD_EVIDENCE" `
-  -ConstraintFile ".\rtl\constraints\VERIFIED_BOARD.cst" `
-  -TimingConstraintFile ".\rtl\constraints\VERIFIED_BOARD.sdc" `
+  -Device "GW1NR-LV9QN88PC6/I5" `
+  -ConstraintFile ".\rtl\constraints\tang_nano_9k_pm25_uart_demo_top.cst" `
+  -TimingConstraintFile ".\rtl\constraints\tang_nano_9k_pm25_uart_demo_top.sdc" `
   -GowinShell "C:\Gowin\Gowin_Vx.x.x\IDE\bin\gw_sh.exe"
 ```
 
-This uses top `pm25_uart_demo_top` and `run all`. Require a real report/bitstream timestamp from this run and inspect:
+Inspect generated reports for:
 
 - logic/LUT and FF totals;
 - DSP and BRAM use;
 - Fmax or worst setup slack at 27 MHz;
+- setup and hold violated endpoints;
 - warnings and unconstrained-path messages;
-- critical path;
 - generated `.fs` location and exact part.
 
-The parser writes separate `gowin_uarttop_report.*` evidence. Do not copy core-only utilization into the full-system row.
+Do not copy generated databases, bulk reports, copied RTL, or bitstreams into
+the tracked source repository.
 
-## 6. Program and demonstrate
+## Program SRAM
 
-These actions remain **UNVERIFIED ON PHYSICAL BOARD**:
+1. Open Gowin Programmer from the installed EDA.
+2. Connect the Tang Nano 9K.
+3. Confirm the detected part matches the intended target.
+4. Select the generated full-top `.fs`.
+5. Program SRAM first for a reversible trial.
+6. Use nonvolatile flash only after SRAM behavior is confirmed and according to
+   the board vendor procedure.
 
-1. Open Gowin Programmer matching the installed EDA/device support.
-2. Connect the exact board and confirm it is detected.
-3. Select the newly generated full-top `.fs`; verify the displayed part matches the board before programming.
-4. Program SRAM first for a reversible trial. Use nonvolatile flash only after SRAM behavior is confirmed and according to the board vendor procedure.
-5. Find the board USB-UART COM port in Device Manager.
-6. Reset or reprogram the FPGA so core bias/hysteresis start at zero.
-7. Preview the first rows:
+The repository records that SRAM programming was successfully performed for
+the preserved run, but it does not preserve the programmer transcript.
+
+## Run UART Comparison
+
+Find the board USB-UART COM port in Device Manager or with a serial-port
+enumeration tool. Use `COMx` below as a placeholder, not a universal value.
+
+Dry-run the feeder:
 
 ```powershell
 .\.venv\Scripts\python.exe .\demo\uart\pm25_uart_feeder.py `
   --dry-run --csv .\data\processed\pm25_hourly_canonical.csv --limit 10
 ```
 
-8. Run the stop-and-wait board comparison:
+Run a physical stop-and-wait board comparison:
 
 ```powershell
 .\.venv\Scripts\python.exe .\demo\uart\pm25_uart_feeder.py `
-  --port COM4 --baud 115200 `
+  --port COMx --baud 115200 `
   --csv .\data\processed\pm25_hourly_canonical.csv `
   --limit 100 `
   --log .\logs\uart\board_run.csv
 ```
 
-Require `SUMMARY ... mismatches=0`. Preserve the log, Gowin reports, bitstream checksum, board revision, constraint sources, programmer output, and a photo/video if competition evidence requires it.
+Require exit code 0 and `mismatches=0`. Preserve any new evidence deliberately
+under `reports/fpga/evidence/` only after reviewing it for relevance and
+secrets.
 
 The feeder sends one request and waits for its response. A checksum-valid
 invalid sample still receives one golden-model response while holding bias and
 hysteresis; a bad checksum receives no normal response. Do not stream a second
 request while the UART top is busy; v1 has no FIFO or flow-control field.
+
+## Preserved Validation Evidence
+
+Current tracked evidence:
+
+- `reports/fpga/hardware_validation.md`
+- `reports/fpga/hardware_validation.json`
+- `reports/fpga/evidence/uart/board_run_100.csv`
+- `reports/fpga/evidence/uart/board_run_mixed.csv`
+- `reports/fpga/evidence/uart/board_threshold_boundaries.csv`
+- `reports/fpga/evidence/uart/board_invalid_qc_hold.csv`
+- `reports/fpga/evidence/uart/board_bias_saturation.csv`
+- `reports/fpga/gowin_implementation_summary.md`
+- `reports/fpga/gowin_implementation_summary.json`
+- `reports/fpga/gowin_uarttop_report.md`
+- `reports/fpga/gowin_uarttop_report.json`
+
+The five canonical UART CSVs total 140 hardware transactions with 0
+mismatches against the bit-exact Python golden model.

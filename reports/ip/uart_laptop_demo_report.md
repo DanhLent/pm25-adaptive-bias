@@ -1,5 +1,8 @@
 # UART Laptop Demo Report
 
+> Historical snapshot: this document predates physical FPGA validation. See
+> `reports/fpga/hardware_validation.md` for current status.
+
 ## Result
 
 A laptop-only UART demo layer was added around the existing verified `pm25_alert_core`. The core algorithm and constants were not changed.
