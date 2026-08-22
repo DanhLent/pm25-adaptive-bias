@@ -122,6 +122,20 @@ def read_pipeline_state(path: str | Path) -> dict[str, Any] | None:
     return payload
 
 
+def _json_default(value):
+    """Convert NumPy scalar values to native Python values for JSON."""
+    module = type(value).__module__
+    if module == "numpy" or module.startswith("numpy."):
+        item = getattr(value, "item", None)
+        if callable(item):
+            return item()
+
+    raise TypeError(
+        f"Object of type {value.__class__.__name__} "
+        "is not JSON serializable"
+    )
+
+
 def write_json_atomic(path: str | Path, payload: dict[str, Any]) -> None:
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -137,7 +151,7 @@ def write_json_atomic(path: str | Path, payload: dict[str, Any]) -> None:
     temporary = Path(handle.name)
     try:
         with handle:
-            json.dump(payload, handle, indent=2, sort_keys=True)
+            json.dump(payload, handle, indent=2, sort_keys=True, default=_json_default)
             handle.write("\n")
             handle.flush()
             os.fsync(handle.fileno())
