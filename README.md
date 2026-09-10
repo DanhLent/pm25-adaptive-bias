@@ -1,18 +1,22 @@
 # PM2.5 Adaptive-Bias FPGA IP
 
-A synthesizable Verilog IP core for quality-gated online calibration of a
-CAMS PM2.5 background estimate using PurpleAir observations.
+A reusable native Verilog IP core for quality-gated online calibration of a
+CAMS PM2.5 background estimate using PurpleAir observations. The frozen design
+now provides a 32-bit AMBA APB3 peripheral for SoC integration while retaining
+the independent UART path used for Tang Nano 9K board validation.
 
 The repository includes a bit-exact Python reference model, deterministic test
-vectors, self-checking RTL regressions, UART integration, host-side data tools,
-tracked Tang Nano 9K constraints, and preserved physical-board validation
-evidence.
+vectors, self-checking RTL regressions, APB3 and UART integration, host-side
+data tools, tracked Tang Nano 9K constraints, and preserved physical-board
+validation evidence.
 
-> **Status:** hardware validated on Tang Nano 9K for the tested vectors and
-> canonical replay. The preserved run completed Gowin synthesis,
+> **Status:** the native core and UART demo path were hardware validated on
+> Tang Nano 9K for the tested vectors and canonical replay. The preserved run
+> completed Gowin synthesis,
 > place-and-route, timing closure at 27 MHz, bitstream generation, SRAM
 > programming, UART communication, and 140 automated hardware-vs-golden
-> transactions with 0 mismatches.
+> transactions with 0 mismatches. The APB3 wrapper is RTL-simulated; no APB
+> physical-board validation or production-silicon signoff is claimed.
 
 > This project is an engineering proof of concept. It is not a medical,
 > regulatory, or public-health warning system.
@@ -33,6 +37,11 @@ For each accepted input sample, the core:
 The default configuration uses signed fixed-point values scaled by 16 and an
 adaptation factor of `1/8`, implemented as an arithmetic right shift.
 
+The core is bus-independent. `pm25_apb_wrapper` maps its native request/response
+contract to a compact APB3 register file for CPU/SoC use. The existing
+`pm25_uart_demo_top` remains a separate PC/board validation frontend; APB is not
+routed through UART.
+
 ## Verification Status
 
 | Component | Status |
@@ -40,6 +49,7 @@ adaptation factor of `1/8`, implemented as an arithmetic right shift.
 | Bit-exact Python reference model | Verified by tests |
 | Deterministic test-vector generation | Verified by tests |
 | Adaptive-bias Verilog core | Verified in RTL simulation |
+| AMBA APB3 wrapper | Verified against an independent native-core instance in RTL simulation |
 | UART packet encoder and decoder | Verified in RTL simulation |
 | UART wrapper and reset contract | Verified in RTL simulation |
 | Full UART 8N1 serial path | Verified in RTL simulation |
@@ -69,6 +79,7 @@ coverage.
 | Path | Purpose |
 | --- | --- |
 | `rtl/core/` | Adaptive bias, fusion, classification, and hysteresis RTL |
+| `rtl/apb/` | 32-bit AMBA APB3 wrapper and register file |
 | `rtl/uart/` | UART receiver, transmitter, and packet codec |
 | `rtl/top/` | UART integration top, `pm25_uart_demo_top` |
 | `rtl/constraints/` | Tracked board constraints, including Tang Nano 9K CST/SDC |
@@ -82,6 +93,8 @@ coverage.
 | `scripts/fpga/` | Gowin readiness and build automation |
 | `tools/fpga/` | Gowin report parsing |
 | `reports/fpga/` | Sanitized implementation and hardware-validation evidence |
+| `docs/ip/` | Current architecture, APB3 register map, integration, and verification |
+| `report/` | Canonical editable report source; prose currently frozen pre-APB |
 
 Canonical timeline data is a realistic replay dataset produced by the data
 pipeline. `data/test_vectors/` contains controlled deterministic vectors used
@@ -111,13 +124,36 @@ py -3 -m venv .venv
 
 ## Run The Complete RTL Regression
 
+Linux/macOS with Icarus Verilog:
+
+```bash
+bash sim/scripts/run_all_tests.sh --skip-vector-generation
+```
+
+Omit `--skip-vector-generation` after installing the Python requirements to
+regenerate deterministic vectors first. On Windows:
+
 ```powershell
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\sim\scripts\run_all_tests.ps1
 ```
 
 The regression runner regenerates deterministic vectors, checks RTL source
 hygiene, exercises supported adaptation shifts, and runs the core, packet,
-wrapper, and serial UART testbenches.
+wrapper, serial UART, and APB3 testbenches.
+
+## APB3 SoC Integration
+
+The APB3 v1 map occupies `0x00` through `0x24`. Software writes CAMS x16,
+PurpleAir x16, and hour, then writes CONTROL with PROCESS plus the desired
+SAMPLE_VALID and QC_OK payload bits. It polls STATUS.DONE and reads the fused
+result and post-transaction bias. PROCESS remains distinct from SAMPLE_VALID,
+so an intentionally invalid sample still completes without updating adaptive
+state.
+
+See `docs/ip/APB3_INTERFACE.md`, `docs/ip/REGISTER_MAP.md`, and
+`docs/ip/INTEGRATION_GUIDE.md` for the exact contract. The repository does not
+provide AXI, DMA, IRQ, IP-XACT, a CPU/SoC, or runtime-programmable algorithm
+parameters.
 
 ## UART Host
 
@@ -185,6 +221,10 @@ scheduled-task arguments, logs, reports, or test vectors.
 - Automatic stale-lock recovery is not yet implemented.
 - An independent pipeline health watchdog is not yet implemented.
 - Model-quality evidence is limited by available QC-valid source overlap.
+- The APB3 wrapper has simulation evidence only in this freeze environment;
+  Gowin implementation and physical-board APB validation were not performed.
+- No IP-XACT package, full SoC implementation, or production-silicon signoff is
+  claimed.
 
 ## License
 

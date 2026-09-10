@@ -1,0 +1,87 @@
+{
+  "canonical_root": "<USER_HOME>/Documents/pm_25_pj",
+  "canonical_10min_csv": "data/live/purpleair/purpleair_10min.csv",
+  "manual_sources": [
+    {
+      "path": "_codex_inputs/raw-pm25-gm (1).csv",
+      "status": "imported",
+      "sha256": "6f63c54cd93b8599452ff9a9507c37267bf755292f33964d7b312bddfc9f3e20",
+      "rows": 432,
+      "start_utc": "2026-07-27T14:40:00+00:00",
+      "end_utc": "2026-07-30T14:30:00+00:00"
+    }
+  ],
+  "canonical_rows": 4128,
+  "canonical_duplicates_removed_this_run": 432,
+  "canonical_start_utc": "2026-07-27T14:40:00+00:00",
+  "canonical_end_utc": "2026-09-07T03:20:00+00:00",
+  "canonical_gap_count": 6,
+  "canonical_gaps": [
+    {
+      "sensor_index": 9520,
+      "data_product": "pm25_cf_1",
+      "resolution_minutes": 10,
+      "gap_start_utc": "2026-08-05T08:20:00+00:00",
+      "gap_end_utc": "2026-08-06T01:10:00+00:00",
+      "gap_minutes": 1010.0
+    },
+    {
+      "sensor_index": 9520,
+      "data_product": "pm25_cf_1",
+      "resolution_minutes": 10,
+      "gap_start_utc": "2026-08-06T05:00:00+00:00",
+      "gap_end_utc": "2026-08-06T05:20:00+00:00",
+      "gap_minutes": 20.0
+    },
+    {
+      "sensor_index": 9520,
+      "data_product": "pm25_cf_1",
+      "resolution_minutes": 10,
+      "gap_start_utc": "2026-08-20T09:30:00+00:00",
+      "gap_end_utc": "2026-08-21T01:20:00+00:00",
+      "gap_minutes": 950.0
+    },
+    {
+      "sensor_index": 9520,
+      "data_product": "pm25_cf_1",
+      "resolution_minutes": 10,
+      "gap_start_utc": "2026-08-21T01:20:00+00:00",
+      "gap_end_utc": "2026-08-25T04:30:00+00:00",
+      "gap_minutes": 5950.0
+    },
+    {
+      "sensor_index": 9520,
+      "data_product": "pm25_cf_1",
+      "resolution_minutes": 10,
+      "gap_start_utc": "2026-08-26T20:50:00+00:00",
+      "gap_end_utc": "2026-09-03T04:40:00+00:00",
+      "gap_minutes": 10550.0
+    },
+    {
+      "sensor_index": 9520,
+      "data_product": "pm25_cf_1",
+      "resolution_minutes": 10,
+      "gap_start_utc": "2026-09-04T05:00:00+00:00",
+      "gap_end_utc": "2026-09-04T06:50:00+00:00",
+      "gap_minutes": 110.0
+    }
+  ],
+  "legacy_hourly_rows_preserved": 687,
+  "purpleair_hourly_rows": 1308,
+  "strict_10min_hours": 551,
+  "non_strict_10min_hours": 143,
+  "legacy_fallback_hours": 614,
+  "hourly_source_counts": {
+    "purpleair_10min": 694,
+    "purpleair_legacy_hourly": 614
+  },
+  "cams_hourly_rows": 13704,
+  "cams_timeline_start_utc": "2024-12-31T17:00:00+00:00",
+  "cams_timeline_end_utc": "2026-09-07T16:00:00+00:00",
+  "cams_hours_missing_purpleair": 12396,
+  "sample_rows": 4128,
+  "old_or_disagreement_rows": 3566,
+  "new_and_severe_disagreement_rows": 780,
+  "low_concentration_or_only_rows_recovered": 2786,
+  "raw_sources_modified": false
+}

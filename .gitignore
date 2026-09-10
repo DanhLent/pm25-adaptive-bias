@@ -4,6 +4,7 @@ __pycache__/
 .mypy_cache/
 .ruff_cache/
 .venv/
+.venv*/
 venv/
 .env
 .ipynb_checkpoints/
@@ -13,6 +14,7 @@ archive/
 outputs/
 logs/
 build/
+tmp/
 reports/**/build*/
 reports/**/render*/
 reports/**/compiled/
@@ -53,10 +55,7 @@ config.local.yaml
 .env
 .env.*
 
-# Internal AI/task artifacts
-AGENTS.md
-CODEX_PM25_FULL_REFACTOR_PROMPT.md
-CODEX_PM25_PRE_TASK_HOTFIX_PROMPT.md
+# Internal superseded task artifacts
 PATCH_MANIFEST.md
 docs/cleanup/
 docs/design_notes/legacy_context/
@@ -67,6 +66,12 @@ reports/alpha_evaluation/latest_alpha_candidate.*
 
 # Temporary report work directories
 reports/midterm/final/*_work/
+
+# Local Codex authoring and validation workspaces
+.codex-finalizer/
+.codex-presentation-build/
+.codex-presentation-output/
+deliverables/**/.chart-data-*/
 
 # --- Internal implementation history ---
 reports/PM25_FULL_REFACTOR_*.md

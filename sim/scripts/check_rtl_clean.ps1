@@ -5,6 +5,7 @@ $ErrorActionPreference = "Stop"
 $Root = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot "..\..")).Path
 $Files = @(
     Get-ChildItem -LiteralPath (Join-Path $Root "rtl\core") -File -Include *.v,*.vh
+    Get-ChildItem -LiteralPath (Join-Path $Root "rtl\apb") -File -Include *.v,*.vh
     Get-ChildItem -LiteralPath (Join-Path $Root "rtl\uart") -File -Include *.v,*.vh
     Get-ChildItem -LiteralPath (Join-Path $Root "rtl\top") -File -Include *.v,*.vh
 )

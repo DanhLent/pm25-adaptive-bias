@@ -101,7 +101,15 @@ try {
     & vvp $SerialImage
     if ($LASTEXITCODE -ne 0) { throw "UART serial top regression failed." }
 
-    Write-Host "[pm25] complete regression: PASS vectors=$VectorCount samples=$SampleCount alpha_shifts=5 uart_packet=PASS uart_wrapper=PASS uart_serial=PASS"
+    $ApbImage = "sim/waves/pm25_apb_wrapper_tb.vvp"
+    & iverilog -g2012 -Wall -Wno-timescale -I rtl/core `
+        -o $ApbImage @CoreSources "rtl/apb/pm25_apb_wrapper.v" `
+        "tb/verilog/tb_pm25_apb_wrapper.v"
+    if ($LASTEXITCODE -ne 0) { throw "APB wrapper compile failed." }
+    & vvp $ApbImage
+    if ($LASTEXITCODE -ne 0) { throw "APB wrapper regression failed." }
+
+    Write-Host "[pm25] complete regression: PASS vectors=$VectorCount samples=$SampleCount alpha_shifts=5 uart_packet=PASS uart_wrapper=PASS uart_serial=PASS apb=PASS"
 }
 finally {
     Pop-Location

@@ -15,8 +15,10 @@ ROOT = Path(__file__).resolve().parents[2]
 ROOT_FILES = (
     ".gitignore",
     "AGENTS.md",
-    "CODEX_PM25_FULL_REFACTOR_PROMPT.md",
-    "CODEX_PM25_PRE_TASK_HOTFIX_PROMPT.md",
+    "LICENSE",
+    "PM25_SOC_IP_FINALIZATION_SPEC.md",
+    "PM25_SOC_IP_ENGINEERING_FREEZE_SUMMARY.md",
+    "PM25_SOC_IP_ENGINEERING_FREEZE_V2_SUMMARY.md",
     "README.md",
     "config.yaml",
     "pytest.ini",
@@ -34,6 +36,7 @@ SOURCE_DIRS = (
     "demo",
     "scripts",
     "docs",
+    "report",
     "tests",
     "training/scripts",
     "training/configs",
@@ -42,13 +45,14 @@ SOURCE_DIRS = (
     "reports/fpga",
     "reports/fixed_point",
     "reports/ip",
+    "reports/engineering_freeze",
+    "reports/engineering_freeze_v2",
 )
 CURRENT_REPORTS = (
     "reports/PM25_FULL_REFACTOR_AUDIT_BASELINE.md",
     "reports/PM25_DATA_MIGRATION_QC_REPORT.md",
     "reports/PM25_FULL_REFACTOR_CHANGE_REPORT.md",
     "reports/PM25_FULL_REFACTOR_VERIFICATION.md",
-    "reports/PM25_PRE_TASK_HOTFIX_REPORT.md",
 )
 EXCLUDED_PARTS = {
     ".venv",
@@ -74,6 +78,7 @@ EXCLUDED_PREFIXES = (
     ("logs",),
     ("outputs",),
     ("training", "outputs"),
+    ("docs", "design_notes", "legacy_context"),
 )
 FIXED_ZIP_TIME = (2026, 7, 30, 0, 0, 0)
 TEXT_SUFFIXES = {
@@ -96,6 +101,12 @@ TEXT_SUFFIXES = {
 WINDOWS_USER_HOME_PATTERN = re.compile(
     r"\b[A-Z]:[\\/]+Users[\\/]+[^\\/\s\"'<>]+",
     flags=re.IGNORECASE,
+)
+# Keep the POSIX root split across literals.  A literal home path followed by a
+# regex username token would otherwise match this sanitizer while the tool is
+# packaging its own source and would corrupt the packaged expression.
+POSIX_USER_HOME_PATTERN = re.compile(
+    r"(?<![A-Za-z0-9_])/" + "home" + r"/[^/\s\"'<>]+"
 )
 
 
@@ -144,7 +155,9 @@ def packaged_bytes(path: Path) -> bytes:
         text = data.decode("utf-8")
     except UnicodeDecodeError:
         return data
-    return WINDOWS_USER_HOME_PATTERN.sub("<USER_HOME>", text).encode("utf-8")
+    text = WINDOWS_USER_HOME_PATTERN.sub("<USER_HOME>", text)
+    text = POSIX_USER_HOME_PATTERN.sub("<USER_HOME>", text)
+    return text.encode("utf-8")
 
 
 def write_archive(output: Path, root: Path = ROOT) -> dict[str, object]:
@@ -169,15 +182,16 @@ def write_archive(output: Path, root: Path = ROOT) -> dict[str, object]:
         manifest = {
             "schema_version": 2,
             "source_root": ".",
-            "purpose": "clean PM2.5 FPGA IP source deliverable",
+            "purpose": "PM2.5 SoC-IP engineering-freeze source deliverable",
             "excluded": [
                 "local virtual environments and caches",
                 "raw/live/processed data and _codex_inputs reference material",
                 "logs, simulator work products, build outputs, and prior archives",
                 "historical submission/backup reports outside the current evidence allowlist",
+                "historical docs/design_notes/legacy_context material",
             ],
             "content_sanitization": [
-                "Windows user-home prefixes in packaged text are replaced with <USER_HOME>."
+                "Windows and POSIX user-home prefixes in packaged text are replaced with <USER_HOME>."
             ],
             "file_count": len(manifest_files),
             "files": manifest_files,
@@ -200,7 +214,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--output",
         type=Path,
-        default=ROOT / "archive/deliverables/pm25_ip_source_hotfix_20260731.zip",
+        default=ROOT / "PM25_SOC_IP_ENGINEERING_FREEZE_SOURCE_V2.zip",
     )
     args = parser.parse_args(argv)
     print(json.dumps(write_archive(args.output), indent=2))

@@ -1,0 +1,33 @@
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{fontspec}
+\usepackage{amsmath}
+\IfFontExistsTF{Times New Roman}{\setmainfont{Times New Roman}}{\IfFontExistsTF{Tinos}{\setmainfont{Tinos}}{\setmainfont{TeXGyreTermes}}}
+\usetikzlibrary{arrows.meta,positioning,calc}
+\begin{document}
+\begin{tikzpicture}[
+  font=\fontsize{9.5pt}{11pt}\selectfont,
+  >=Latex,
+  line/.style={-Latex,line width=0.65pt},
+  block/.style={draw,line width=0.65pt,align=center,minimum height=1.05cm,inner xsep=5pt,inner ysep=4pt},
+  state/.style={block,minimum width=1.90cm},
+  note/.style={draw,dashed,line width=0.55pt,align=center,inner xsep=5pt,inner ysep=4pt}
+]
+  \node[block,text width=2.10cm] (cams) at (0,1.05) {Dữ liệu CAMS\\$p_C[t]$ x16};
+  \node[block,text width=2.10cm] (pa) at (0,-0.45) {Dữ liệu PurpleAir\\$p_P[t]$ x16};
+  \node[block,text width=2.15cm] (res) at (3.0,0.30) {Tính sai lệch\\$d[t]=p_P[t]-p_C[t]$};
+  \node[block,text width=2.20cm] (update) at (6.0,0.30) {Cập nhật có điều kiện\\tạo $b[t+1]$};
+  \node[state,text width=2.05cm] (reg) at (9.0,0.30) {Thanh ghi $b$\\nạp ở chu kỳ kế tiếp};
+  \node[note,text width=2.55cm] (enable) at (3.0,-2.35) {$u[t]=1$ khi mẫu hợp lệ\\và QC đạt};
+  \node[block,text width=2.30cm] (fuse) at (6.0,-2.35) {Tạo $p_F[t]$\\dùng $b[t]$ trước cập nhật};
+  \node[block,text width=2.25cm] (alert) at (9.0,-2.35) {Phân mức và\\vùng trễ cảnh báo};
+
+  \draw[line] (cams.east) -- ($(res.west)+(0,0.18)$);
+  \draw[line] (pa.east) -- ($(res.west)+(0,-0.18)$);
+  \draw[line] (res.east) -- (update.west);
+  \draw[line] (update.east) -- (reg.west);
+  \draw[line] (enable.north) -- ++(0,0.40) -| ($(update.south west)+(0.30,0)$);
+  \draw[line] (reg.south) -- ++(0,-0.55) -| node[pos=0.25,above=3pt] {$b[t]$} (fuse.north);
+  \draw[line] (cams.west) -- ++(-0.40,0) |- ($(fuse.south)+(0,-0.55)$) -- (fuse.south);
+  \draw[line] (fuse.east) -- (alert.west);
+\end{tikzpicture}
+\end{document}

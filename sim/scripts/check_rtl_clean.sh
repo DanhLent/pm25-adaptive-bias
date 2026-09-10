@@ -10,6 +10,8 @@ cd "$ROOT_DIR" || exit 1
 rtl_files=(
     rtl/core/*.v
     rtl/core/*.vh
+    rtl/apb/*.v
+    rtl/apb/*.vh
     rtl/uart/*.v
     rtl/uart/*.vh
     rtl/top/*.v

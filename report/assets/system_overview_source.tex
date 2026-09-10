@@ -1,0 +1,32 @@
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{fontspec}
+\IfFontExistsTF{Times New Roman}{\setmainfont{Times New Roman}}{\IfFontExistsTF{Tinos}{\setmainfont{Tinos}}{\setmainfont{TeX Gyre Termes}}}
+\usetikzlibrary{arrows.meta,positioning,fit}
+\begin{document}
+\begin{tikzpicture}[
+  font=\fontsize{10pt}{12pt}\selectfont,
+  block/.style={draw,rectangle,minimum width=5.0cm,minimum height=1.10cm,align=center,inner xsep=7pt,inner ysep=4pt,line width=0.65pt},
+  core/.style={block,line width=0.85pt,font=\bfseries\fontsize{10.5pt}{12.5pt}\selectfont},
+  panel/.style={draw,dashed,rounded corners=2pt,line width=0.55pt,inner sep=9pt},
+  flow/.style={-{Latex[length=2.4mm]},line width=0.65pt},
+  linklabel/.style={fill=white,inner xsep=3pt,inner ysep=1pt,font=\fontsize{9.5pt}{11.5pt}\selectfont},
+  title/.style={font=\bfseries\fontsize{10.5pt}{12.5pt}\selectfont,align=center},
+]
+  \node[title] (soc-title) at (-3.3,3.85) {HỖ TRỢ TÍCH HỢP SoC};
+  \node[block] (soc) at (-3.3,2.45) {Bộ xử lý / hệ thống SoC};
+  \node[block] (apb) at (-3.3,0.45) {Giao diện APB3\\và ánh xạ thanh ghi};
+  \node[core] (soc-core) at (-3.3,-1.55) {Lõi xử lý PM2.5};
+  \draw[flow] (soc) -- node[linklabel,right]{APB3} (apb);
+  \draw[flow] (apb) -- (soc-core);
+
+  \node[title] (fpga-title) at (3.3,3.85) {KIỂM CHỨNG TRÊN FPGA};
+  \node[block] (pc) at (3.3,2.45) {Máy tính kiểm thử};
+  \node[block] (uart) at (3.3,0.45) {Giao tiếp UART};
+  \node[core] (fpga-core) at (3.3,-1.55) {Lõi xử lý PM2.5};
+  \draw[flow] (pc) -- node[linklabel,right]{UART} (uart);
+  \draw[flow] (uart) -- (fpga-core);
+
+  \node[panel,fit=(soc-title)(soc)(apb)(soc-core)] {};
+  \node[panel,fit=(fpga-title)(pc)(uart)(fpga-core)] {};
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,9 @@
+time,sample_valid,qc_ok,hour,cams_pm25_x16,purpleair_pm25_x16
+mixed_00,1,1,0,448,288
+mixed_01,1,0,1,472,320
+mixed_02,1,1,2,496,360
+mixed_03,1,1,3,544,416
+mixed_04,1,0,4,592,464
+mixed_05,1,1,5,640,512
+mixed_06,1,0,6,576,440
+mixed_07,1,1,7,528,384
